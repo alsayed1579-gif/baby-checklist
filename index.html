@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>قائمة مستلزمات الطفل 👶</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --deep: #B84F72;
+    --blush: #F2A7C0;
+    --cream: #FFF8F0;
+    --text: #3A2535;
+    --light: #7A6070;
+    --shadow: rgba(176,79,114,0.12);
+    --mint: #5BAF80;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+  body { font-family:'Tajawal',sans-serif; background:var(--cream); color:var(--text); min-height:100vh;
+    background-image: radial-gradient(circle at 10% 20%,#fde8f0 0%,transparent 40%), radial-gradient(circle at 90% 80%,#e8f5fd 0%,transparent 40%); }
+
+  header {
+    background: linear-gradient(135deg,#F2A7C0,#B84F72 60%,#8B3A5A);
+    padding: 20px 16px 16px; text-align:center;
+    position: sticky; top:0; z-index:100;
+    box-shadow: 0 3px 20px rgba(184,79,114,0.3);
+  }
+  header h1 { font-size:22px; font-weight:900; color:white; text-shadow:0 2px 8px rgba(0,0,0,0.2); }
+  .sync-row { display:flex; align-items:center; justify-content:center; gap:6px; margin-top:4px; }
+  .dot { width:7px; height:7px; border-radius:50%; background:#4ade80; animation:blink 2s infinite; }
+  .dot.off { background:#f87171; animation:none; }
+  @keyframes blink { 0%,100%{opacity:1}50%{opacity:.3} }
+  .sync-lbl { font-size:11px; color:rgba(255,255,255,.85); font-weight:600; }
+  .prog-wrap { background:rgba(255,255,255,.2); border-radius:20px; height:6px; margin:10px auto 0; max-width:260px; overflow:hidden; }
+  .prog-fill { background:white; height:100%; border-radius:20px; transition:width .5s cubic-bezier(.34,1.56,.64,1); }
+  .prog-txt { color:rgba(255,255,255,.88); font-size:11px; margin-top:5px; font-weight:700; }
+
+  .share-bar { background:white; padding:10px 14px; display:flex; gap:8px; align-items:center; box-shadow:0 2px 10px var(--shadow); }
+  .room-url { flex:1; font-size:11px; color:var(--light); background:#FFF0F5; border-radius:9px; padding:7px 10px;
+    border:1.5px dashed var(--blush); text-align:center; direction:ltr; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-weight:700; }
+  .copy-btn { background:var(--deep); color:white; border:none; border-radius:9px; padding:8px 12px;
+    font-family:'Tajawal',sans-serif; font-size:12px; font-weight:800; cursor:pointer; white-space:nowrap; }
+
+  .container { max-width:600px; margin:0 auto; padding:14px 12px 50px; }
+  .filter-bar { display:flex; gap:7px; margin-bottom:12px; overflow-x:auto; padding-bottom:2px; scrollbar-width:none; }
+  .filter-bar::-webkit-scrollbar { display:none; }
+  .fbtn { padding:6px 14px; border-radius:18px; border:2px solid transparent; font-family:'Tajawal',sans-serif;
+    font-size:12px; font-weight:800; cursor:pointer; white-space:nowrap; background:white; color:var(--light);
+    box-shadow:0 2px 8px var(--shadow); transition:all .2s; }
+  .fbtn.active { background:var(--deep); color:white; }
+
+  .cat { margin-bottom:14px; border-radius:16px; overflow:hidden; background:white; box-shadow:0 3px 16px var(--shadow); }
+  .cat-hd { padding:12px 14px; display:flex; align-items:center; gap:8px; cursor:pointer; user-select:none; }
+  .cat-hd .em { font-size:18px; flex-shrink:0; }
+  .cat-hd h2 { font-size:14px; font-weight:900; flex:1; color:white; }
+  .cat-cnt { font-size:10px; font-weight:800; padding:2px 8px; border-radius:18px; background:rgba(255,255,255,.25); color:white; }
+  .chev { color:rgba(255,255,255,.7); font-size:10px; transition:transform .3s; }
+  .collapsed .chev { transform:rotate(-90deg); }
+  .collapsed .items-list { display:none; }
+  .add-btn { background:rgba(255,255,255,.25); border:none; border-radius:7px; color:white; font-size:16px;
+    width:26px; height:26px; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+
+  .c1{background:linear-gradient(135deg,#F2A7C0,#D06888)}
+  .c2{background:linear-gradient(135deg,#87CEE8,#3A8FB5)}
+  .c3{background:linear-gradient(135deg,#A8D8A8,#4A8A4A)}
+  .c4{background:linear-gradient(135deg,#DDD5F5,#8A7ABB)}
+  .c5{background:linear-gradient(135deg,#FFD4A8,#BB7A3A)}
+  .c6{background:linear-gradient(135deg,#F5D5E0,#BB6080)}
+
+  .item { display:flex; align-items:center; padding:10px 12px; gap:9px; border-bottom:1px solid #F5EEF2; }
+  .item:last-child { border-bottom:none; }
+  .item.done { background:#F2FFF7; }
+  .item.done .iname { color:var(--light); }
+
+  .counter { display:flex; align-items:center; gap:5px; flex-shrink:0; }
+  .cbtn { width:30px; height:30px; border-radius:9px; border:none; cursor:pointer;
+    font-size:18px; font-weight:900; display:flex; align-items:center; justify-content:center; transition:transform .1s; }
+  .cbtn:active { transform:scale(.85); }
+  .cm { background:#FFE8EE; color:var(--deep); }
+  .cp2 { background:#E0F5EA; color:#2A8A50; }
+  .cnum { min-width:34px; text-align:center; font-size:14px; font-weight:900; border-radius:8px; padding:4px 2px; }
+  .cnum.z { background:#FFE8EE; color:var(--deep); }
+  .cnum.f { background:#E0F5EA; color:#2A8A50; }
+  .cnum.p { background:#FFF5F8; color:var(--text); }
+
+  .iinfo { flex:1; min-width:0; }
+  .iname { font-size:13px; font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .isub { font-size:10px; color:var(--light); margin-top:1px; }
+  .ineed { font-size:10px; font-weight:800; }
+  .ok { color:#2A8A50; } .pt { color:#BB7700; } .no { color:#CC3333; }
+
+  .ebtn { background:none; border:none; font-size:15px; cursor:pointer; padding:4px; border-radius:7px; flex-shrink:0; opacity:.45; }
+  .ebtn:active { background:#F0E0E8; opacity:1; }
+
+  /* modal */
+  .overlay { position:fixed; inset:0; background:rgba(58,37,53,.55); display:flex; align-items:flex-end; justify-content:center;
+    z-index:500; opacity:0; pointer-events:none; transition:opacity .25s; }
+  .overlay.open { opacity:1; pointer-events:all; }
+  .modal { background:white; border-radius:22px 22px 0 0; padding:22px 18px 30px; width:100%; max-width:600px;
+    transform:translateY(100%); transition:transform .3s cubic-bezier(.34,1.2,.64,1); max-height:88vh; overflow-y:auto; }
+  .overlay.open .modal { transform:translateY(0); }
+  .modal h3 { font-size:16px; font-weight:900; margin-bottom:16px; text-align:center; color:var(--deep); }
+  .fg { margin-bottom:12px; }
+  .fg label { font-size:12px; font-weight:700; color:var(--light); margin-bottom:4px; display:block; }
+  .fg input { width:100%; padding:10px 13px; border-radius:11px; border:2px solid #EEE;
+    font-family:'Tajawal',sans-serif; font-size:14px; font-weight:600; color:var(--text); outline:none; transition:border .2s; }
+  .fg input:focus { border-color:var(--blush); }
+  .mbtns { display:flex; gap:8px; margin-top:16px; }
+  .bsave { flex:1; background:var(--deep); color:white; border:none; border-radius:13px; padding:12px;
+    font-family:'Tajawal',sans-serif; font-size:14px; font-weight:900; cursor:pointer; }
+  .bdel  { background:#FFE8E8; color:#CC3333; border:none; border-radius:13px; padding:12px 13px;
+    font-family:'Tajawal',sans-serif; font-size:14px; font-weight:800; cursor:pointer; }
+  .bcan  { background:#F0E8EC; color:var(--light); border:none; border-radius:13px; padding:12px 14px;
+    font-family:'Tajawal',sans-serif; font-size:14px; font-weight:800; cursor:pointer; }
+
+  .cfw { position:fixed; inset:0; pointer-events:none; z-index:999; }
+  .cfp { position:absolute; border-radius:2px; animation:cffall 2s ease-out forwards; }
+  @keyframes cffall { 0%{transform:translateY(-10px) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0} }
+
+  .empty { text-align:center; padding:28px 16px; color:var(--light); font-size:13px; }
+  .loading { text-align:center; padding:40px; color:var(--light); font-size:15px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>👶 مستلزمات الطفل الجديد</h1>
+  <div class="sync-row">
+    <div class="dot off" id="dot"></div>
+    <span class="sync-lbl" id="slbl">جاري التحميل...</span>
+  </div>
+  <div class="prog-wrap"><div class="prog-fill" id="pf" style="width:0%"></div></div>
+  <div class="prog-txt" id="pt">0 من 0</div>
+</header>
+
+<div class="share-bar">
+  <div class="room-url" id="roomUrl">جاري التحميل...</div>
+  <button class="copy-btn" onclick="copyLink()">📋 شارك</button>
+</div>
+
+<div class="container">
+  <div class="filter-bar">
+    <button class="fbtn active" onclick="setF('all',this)">الكل</button>
+    <button class="fbtn" onclick="setF('need',this)">⚠️ ناقص</button>
+    <button class="fbtn" onclick="setF('partial',this)">🔶 جزئي</button>
+    <button class="fbtn" onclick="setF('done',this)">✅ مكتمل</button>
+  </div>
+  <div id="list"><div class="loading">⏳ جاري التحميل...</div></div>
+</div>
+
+<div class="overlay" id="ov" onclick="closeM(event)">
+  <div class="modal">
+    <h3 id="mtitle">تعديل</h3>
+    <div class="fg"><label>اسم الغرض</label><input id="ename" type="text"></div>
+    <div class="fg"><label>تفاصيل (اختياري)</label><input id="edetail" type="text"></div>
+    <div class="fg"><label>الكمية المطلوبة (0 = بدون حد)</label><input id="eneed" type="number" min="0"></div>
+    <div class="fg"><label>الكمية الموجودة</label><input id="ehave" type="number" min="0"></div>
+    <div class="fg"><label>الوحدة</label><input id="eunit" type="text"></div>
+    <div class="mbtns">
+      <button class="bsave" onclick="saveM()">💾 حفظ</button>
+      <button class="bdel" onclick="delItem()">🗑️</button>
+      <button class="bcan" onclick="closeM()">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<div class="cfw" id="cfw"></div>
+
+<script>
+// ============================
+// STORAGE KEY
+// ============================
+const STORE_KEY = 'baby_checklist_data';
+
+// ============================
+// DEFAULT DATA
+// ============================
+const DEFAULTS = [
+  {id:'clothes',name:'ملابس',emoji:'👗',cls:'c1',items:[
+    {id:'nb_suits',  name:'شباحات نيوبورن',      detail:'مقاس نيوبورن',   need:10,have:10,unit:'قطعة'},
+    {id:'nb_ones',   name:'بدلات أفرول نيوبورن',  detail:'فيرست سايز',     need:5, have:5, unit:'قطعة'},
+    {id:'sleep',     name:'أفرول نوم',            detail:'',               need:0, have:11,unit:'قطعة'},
+    {id:'s03',       name:'بدلات 0-3',            detail:'مقاس 0-3 شهور', need:20,have:0, unit:'قطعة'},
+    {id:'socks03',   name:'شباحات 0-3',           detail:'مقاس 0-3 شهور', need:12,have:7, unit:'قطعة'},
+    {id:'fancy',     name:'بدلات كشخة للاستقبال', detail:'مقاس 0-3',      need:2, have:3, unit:'قطعة'},
+    {id:'hats',      name:'قبعات سنتر بوينت',     detail:'',               need:6, have:0, unit:'قطعة'},
+  ]},
+  {id:'towels',name:'فوط',emoji:'🛁',cls:'c2',items:[
+    {id:'sw_big',    name:'فوطة كبيرة مالت سباحة',detail:'مع قحفية',       need:2, have:2, unit:'قطعة'},
+    {id:'sw_sm',     name:'فوط صغار',             detail:'',               need:3, have:1, unit:'قطعة'},
+    {id:'hand',      name:'فوطة يد (هاند)',        detail:'من جونيور',      need:0, have:1, unit:'قطعة'},
+    {id:'ftowel',    name:'فوط الزوع (علبة)',      detail:'يجون في علبة',   need:1, have:0, unit:'علبة'},
+  ]},
+  {id:'bibs',name:'مرايل',emoji:'🍼',cls:'c3',items:[
+    {id:'bibs',      name:'مرايل زوع',            detail:'درزنتين=24 حبة', need:24,have:3, unit:'حبة'},
+  ]},
+  {id:'bedding',name:'نوم وفراش',emoji:'🛏️',cls:'c4',items:[
+    {id:'swad',      name:'قماطات',               detail:'',               need:7, have:0, unit:'قطعة'},
+    {id:'sheets',    name:'مفارش',                detail:'',               need:3, have:0, unit:'قطعة'},
+    {id:'basket',    name:'سلة الطفل',            detail:'',               need:1, have:0, unit:'قطعة'},
+    {id:'mcare',     name:'مفارك مذركير',          detail:'ثنتين مع بعض',  need:2, have:0, unit:'قطعة'},
+  ]},
+  {id:'gear',name:'معدات وإكسسوارات',emoji:'🎒',cls:'c5',items:[
+    {id:'bbig',      name:'شنطة كبيرة',           detail:'',               need:1, have:0, unit:'قطعة'},
+    {id:'bsm',       name:'شنطة صغيرة',           detail:'',               need:1, have:0, unit:'قطعة'},
+    {id:'cover',     name:'طربال',                detail:'',               need:1, have:0, unit:'قطعة'},
+    {id:'net',       name:'شبك سباحة عملي',       detail:'أفضل من السفنجة',need:1, have:0, unit:'قطعة'},
+    {id:'burnz',     name:'برانص',                detail:'',               need:3, have:0, unit:'قطعة'},
+    {id:'sah',       name:'سهايات',               detail:'',               need:3, have:0, unit:'قطعة'},
+    {id:'wipes',     name:'وايبس سنتر بوينت',     detail:'',               need:0, have:0, unit:'علبة'},
+  ]},
+  {id:'care',name:'عناية ورضاعة',emoji:'💗',cls:'c6',items:[
+    {id:'dalga',     name:'دلغة',                 detail:'',               need:1, have:0, unit:'قطعة'},
+    {id:'evbottle',  name:'مراضع إيفنت',          detail:'',               need:0, have:0, unit:'قطعة'},
+    {id:'mybottle',  name:'مرضعة ماي',            detail:'',               need:1, have:0, unit:'قطعة'},
+    {id:'must',      name:'مجموعة موستيلا',       detail:'',               need:1, have:0, unit:'مجموعة'},
+  ]},
+];
+
+// ============================
+// STATE
+// ============================
+let cats = [];
+let filt = 'all';
+let editCtx = null;
+let shareUrl = '';
+let saveTimer = null;
+
+// ============================
+// STORAGE (artifact storage API)
+// ============================
+async function loadData() {
+  setSS('off','جاري التحميل...');
+  try {
+    const result = await window.storage.get(STORE_KEY, true); // shared=true for cross-device
+    if (result && result.value) {
+      cats = JSON.parse(result.value);
+      setSS('on','متزامن ✓');
+    } else {
+      cats = JSON.parse(JSON.stringify(DEFAULTS));
+      await saveData();
+    }
+  } catch(e) {
+    cats = JSON.parse(JSON.stringify(DEFAULTS));
+    setSS('off','وضع محلي');
+  }
+  render();
+}
+
+async function saveData() {
+  try {
+    await window.storage.set(STORE_KEY, JSON.stringify(cats), true); // shared=true
+    setSS('on','تم الحفظ ✓');
+  } catch(e) {
+    setSS('off','خطأ في الحفظ');
+  }
+}
+
+function scheduleSave() {
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveData, 800);
+}
+
+// Poll for remote changes every 10s
+setInterval(async () => {
+  try {
+    const result = await window.storage.get(STORE_KEY, true);
+    if (result && result.value) {
+      const remote = JSON.parse(result.value);
+      // simple check: compare stringified
+      if (JSON.stringify(remote) !== JSON.stringify(cats)) {
+        cats = remote;
+        render();
+        setSS('on','تم التحديث ✓');
+      }
+    }
+  } catch(e){}
+}, 10000);
+
+// ============================
+// SYNC STATUS
+// ============================
+function setSS(status, label) {
+  document.getElementById('dot').className = 'dot' + (status==='on' ? '' : ' off');
+  document.getElementById('slbl').textContent = label;
+}
+
+// ============================
+// SHARE URL
+// ============================
+function setupShareUrl() {
+  try {
+    shareUrl = window.location.href;
+  } catch(e) {
+    shareUrl = 'افتح هذا الملف في المتصفح';
+  }
+  document.getElementById('roomUrl').textContent = shareUrl || 'افتح نفس الملف على الجهاز الثاني';
+}
+
+function copyLink() {
+  const btn = document.querySelector('.copy-btn');
+  try {
+    if (navigator.clipboard && shareUrl) {
+      navigator.clipboard.writeText(shareUrl).then(() => {
+        btn.textContent = '✅ تم!';
+        setTimeout(()=>btn.textContent='📋 شارك', 2000);
+      });
+    } else {
+      btn.textContent = '✅ تم!';
+      setTimeout(()=>btn.textContent='📋 شارك', 2000);
+    }
+  } catch(e) {}
+}
+
+// ============================
+// STATUS HELPERS
+// ============================
+function getS(item) {
+  const n = item.need || 0;
+  if (n === 0) return item.have > 0 ? 'done' : 'check';
+  if (item.have >= n) return 'done';
+  if (item.have > 0) return 'partial';
+  return 'need';
+}
+
+function filtOk(item) {
+  const s = getS(item);
+  if (filt==='all') return true;
+  if (filt==='done') return s==='done';
+  if (filt==='need') return s==='need';
+  if (filt==='partial') return s==='partial';
+  return true;
+}
+
+function setF(f, btn) {
+  filt = f;
+  document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+// ============================
+// RENDER
+// ============================
+function render() {
+  const cont = document.getElementById('list');
+  let html = '';
+  let tot = 0, done = 0;
+
+  for (const cat of cats) {
+    const vis = cat.items.filter(filtOk);
+    tot += cat.items.length;
+    done += cat.items.filter(i=>getS(i)==='done').length;
+    if (!vis.length) continue;
+    const cd = cat.items.filter(i=>getS(i)==='done').length;
+
+    html += `<div class="cat" id="cat-${cat.id}">
+      <div class="cat-hd ${cat.cls}" onclick="toggleC('${cat.id}')">
+        <span class="em">${cat.emoji}</span>
+        <h2>${cat.name}</h2>
+        <button class="add-btn" onclick="event.stopPropagation();openAdd('${cat.id}')">＋</button>
+        <span class="cat-cnt">${cd}/${cat.items.length}</span>
+        <span class="chev">▼</span>
+      </div>
+      <div class="items-list">`;
+
+    for (const item of vis) {
+      const s = getS(item);
+      const n = item.need || 0;
+      let nl='', nc='';
+      if (n===0)           { nl = item.have>0 ? `عندك ${item.have}` : 'بدون حد'; nc='ok'; }
+      else if(item.have>=n){ nl = `${item.have}/${n} ✓`;                           nc='ok'; }
+      else if(item.have>0) { nl = `${item.have}/${n} ← ناقص ${n-item.have}`;      nc='pt'; }
+      else                 { nl = `تحتاج ${n} ${item.unit}`;                       nc='no'; }
+
+      const cn = item.have===0?'z':(n>0&&item.have>=n?'f':'p');
+
+      html += `<div class="item ${s==='done'?'done':''}">
+        <div class="counter">
+          <button class="cbtn cm" onclick="chg('${cat.id}','${item.id}',-1)">−</button>
+          <div class="cnum ${cn}">${item.have}</div>
+          <button class="cbtn cp2" onclick="chg('${cat.id}','${item.id}',1)">+</button>
+        </div>
+        <div class="iinfo">
+          <div class="iname">${item.name}</div>
+          <div class="isub">${item.detail?`${item.detail} · `:''}<span class="ineed ${nc}">${nl}</span></div>
+        </div>
+        <button class="ebtn" onclick="openEdit('${cat.id}','${item.id}')">✏️</button>
+      </div>`;
+    }
+    html += `</div></div>`;
+  }
+
+  if (!html) html = `<div class="empty">لا توجد عناصر هنا</div>`;
+  cont.innerHTML = html;
+
+  const pct = tot ? Math.round(done/tot*100) : 0;
+  document.getElementById('pf').style.width = pct + '%';
+  document.getElementById('pt').textContent = `${done} من ${tot} مكتملة (${pct}%)`;
+}
+
+function toggleC(id) {
+  document.getElementById('cat-'+id)?.classList.toggle('collapsed');
+}
+
+// ============================
+// COUNTER
+// ============================
+function chg(catId, itemId, d) {
+  const cat = cats.find(c=>c.id===catId);
+  const item = cat?.items.find(i=>i.id===itemId);
+  if (!item) return;
+  const prev = item.have;
+  item.have = Math.max(0, item.have + d);
+  if (item.have === prev) return;
+  const wasDone = getS({...item, have:prev})==='done';
+  const nowDone = getS(item)==='done';
+  if (!wasDone && nowDone) confetti();
+  scheduleSave();
+  render();
+}
+
+// ============================
+// MODAL
+// ============================
+function openEdit(catId, itemId) {
+  const cat = cats.find(c=>c.id===catId);
+  const item = cat?.items.find(i=>i.id===itemId);
+  if (!item) return;
+  editCtx = {catId, itemId};
+  document.getElementById('mtitle').textContent = 'تعديل: ' + item.name;
+  document.getElementById('ename').value   = item.name;
+  document.getElementById('edetail').value = item.detail || '';
+  document.getElementById('eneed').value   = item.need ?? 0;
+  document.getElementById('ehave').value   = item.have ?? 0;
+  document.getElementById('eunit').value   = item.unit || 'قطعة';
+  document.getElementById('ov').classList.add('open');
+}
+
+function openAdd(catId) {
+  editCtx = {catId, itemId: null};
+  document.getElementById('mtitle').textContent = 'إضافة غرض جديد';
+  document.getElementById('ename').value   = '';
+  document.getElementById('edetail').value = '';
+  document.getElementById('eneed').value   = 0;
+  document.getElementById('ehave').value   = 0;
+  document.getElementById('eunit').value   = 'قطعة';
+  document.getElementById('ov').classList.add('open');
+}
+
+function closeM(e) {
+  if (e && e.target !== document.getElementById('ov')) return;
+  document.getElementById('ov').classList.remove('open');
+}
+
+function saveM() {
+  if (!editCtx) return;
+  const name = document.getElementById('ename').value.trim();
+  if (!name) return;
+  const detail = document.getElementById('edetail').value.trim();
+  const need   = parseInt(document.getElementById('eneed').value) || 0;
+  const have   = parseInt(document.getElementById('ehave').value) || 0;
+  const unit   = document.getElementById('eunit').value.trim() || 'قطعة';
+  const cat = cats.find(c=>c.id===editCtx.catId);
+  if (!cat) return;
+  if (editCtx.itemId) {
+    const item = cat.items.find(i=>i.id===editCtx.itemId);
+    if (item) Object.assign(item, {name, detail, need, have, unit});
+  } else {
+    cat.items.push({id:'i'+Date.now(), name, detail, need, have, unit});
+  }
+  document.getElementById('ov').classList.remove('open');
+  scheduleSave();
+  render();
+}
+
+function delItem() {
+  if (!editCtx?.itemId) return;
+  if (!confirm('تبي تحذف هذا الغرض؟')) return;
+  const cat = cats.find(c=>c.id===editCtx.catId);
+  if (cat) cat.items = cat.items.filter(i=>i.id!==editCtx.itemId);
+  document.getElementById('ov').classList.remove('open');
+  scheduleSave();
+  render();
+}
+
+// ============================
+// CONFETTI
+// ============================
+function confetti() {
+  const cols = ['#F2A7C0','#B84F72','#87CEE8','#A8D8A8','#FFD4A8','#DDD5F5','#FFE08A'];
+  const w = document.getElementById('cfw');
+  for (let i=0;i<22;i++) {
+    const el = document.createElement('div');
+    el.className = 'cfp';
+    const s = el.style;
+    s.left = Math.random()*100+'%';
+    s.top  = Math.random()*15+'%';
+    s.background = cols[~~(Math.random()*cols.length)];
+    const sz = 6+Math.random()*8;
+    s.width = sz+'px'; s.height = sz+'px';
+    s.borderRadius = Math.random()>.5?'50%':'2px';
+    s.animationDelay = Math.random()*.4+'s';
+    s.animationDuration = (1.5+Math.random())+'s';
+    w.appendChild(el);
+    setTimeout(()=>el.remove(), 2600);
+  }
+}
+
+// ============================
+// INIT
+// ============================
+setupShareUrl();
+loadData();
+</script>
+</body>
+</html>
